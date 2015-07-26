@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/default.css" type="text/css">
+    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css" type="text/css">
+  </head>
+  <body>
+    <script type="text/x-handlebars">
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse">
+            <span class="sr-only">
+              Toggle navigation
+            </span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="navbar-brand">
+            {{#link-to 'index'}}Whisper{{/link-to}}
+          </div>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li>
+              {{#link-to 'captures'}}Captures{{/link-to}}
+            </li>
+          </ul>
+        </div>
+      </nav>
+    
+      <div class="container" id="content">
+        <div class="row">
+          {{outlet}}
+        </div>
+      </div>
+    </script>
+
+
+    <script type="text/javascript" src="libs/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="libs/ember/ember.js"></script>
+    <script type="text/javascript" src="libs/ember-data/ember-data.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+  </body>
+</html>
