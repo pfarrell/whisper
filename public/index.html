@@ -21,52 +21,13 @@
             <span class="icon-bar"></span>
           </button>
           <div class="navbar-brand">
-            {{#link-to 'index'}}Pigeon{{/link-to}}
-          </div>
-          <div class="navbar-left navbar-form">
-            <div class="input-group">
-              {{input action="search" type="search" class="form-control" placeholder="Search"}}
-            </div>
+            {{#link-to 'index'}}Whisper{{/link-to}}
           </div>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
           <ul class="nav navbar-nav">
             <li>
-              {{#link-to 'captures'}}Captures{{/link-to}}
-            </li>
-            <li>
-              {{#link-to 'recents'}}Recent{{/link-to}}
-            </li>
-            <li>
-              {{#link-to 'randoms'}}Random{{/link-to}}
-            </li>
-            <li>
-              {{#link-to 'clicks'}}History{{/link-to}}
-            </li>
-            <li>
-              {{#link-to 'stats'}}Stats{{/link-to}}
-            </li>
-            <li>
-              {{#link-to 'rssFeeds'}}Sources{{/link-to}}
-            </li>
-            <li>
-              <button class='btn' {{action 'refresh'}}>
-                Refresh
-              </button>
-            </li>
-          </ul>
-          <div class="navbar-right navbar-form">
-            <div class="input-group">
-              {{input action="capture" type="search" class="form-control" placeholder="Capture a Link"}}
-            </div>
-          </div>
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <p class="navbar-btn bookmarklet">
-                <a class="btn btn-success" href="javascript:(function(){if(window.myBookmarklet!==undefined){myBookmarklet();}else{document.body.appendChild(document.createElement('script')).src='https://patf.net/pigeon/marklet.js?';}})();">
-                  Save to Pigeon
-                </a>
-              </p>
+              {{#link-to 'notes'}}Notes{{/link-to}}
             </li>
           </ul>
         </div>
@@ -74,18 +35,19 @@
     
       <div class="container" id="content">
         <div class="row">
-          {{outlet}}
+          <div class="col-md-6">
+            {{outlet}}
+          </div>
         </div>
       </div>
     </script>
 
-    <script type="text/x-handlebars" id="rssFeeds">
+    <script type="text/x-handlebars" id="notes">
+      Notes Here
       <div class="col-md-4 view">
-        {{#each feed in model}}
-          <div class="article">
-            {{#link-to 'articles' feed.id}}
-              {{feed.title}}
-            {{/link-to}}
+        {{#each note in model}} 
+          <div class="note">
+            Note here
           </div>
         {{/each}}
       </div>
