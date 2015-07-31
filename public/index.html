@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/default.css" type="text/css">
+    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css" type="text/css">
+  </head>
+  <body>
+    <script type="text/x-handlebars">
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse">
+            <span class="sr-only">
+              Toggle navigation
+            </span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="navbar-brand">
+            {{#link-to 'index'}}Pigeon{{/link-to}}
+          </div>
+          <div class="navbar-left navbar-form">
+            <div class="input-group">
+              {{input action="search" type="search" class="form-control" placeholder="Search"}}
+            </div>
+          </div>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li>
+              {{#link-to 'captures'}}Captures{{/link-to}}
+            </li>
+            <li>
+              {{#link-to 'recents'}}Recent{{/link-to}}
+            </li>
+            <li>
+              {{#link-to 'randoms'}}Random{{/link-to}}
+            </li>
+            <li>
+              {{#link-to 'clicks'}}History{{/link-to}}
+            </li>
+            <li>
+              {{#link-to 'stats'}}Stats{{/link-to}}
+            </li>
+            <li>
+              {{#link-to 'rssFeeds'}}Sources{{/link-to}}
+            </li>
+            <li>
+              <button class='btn' {{action 'refresh'}}>
+                Refresh
+              </button>
+            </li>
+          </ul>
+          <div class="navbar-right navbar-form">
+            <div class="input-group">
+              {{input action="capture" type="search" class="form-control" placeholder="Capture a Link"}}
+            </div>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <p class="navbar-btn bookmarklet">
+                <a class="btn btn-success" href="javascript:(function(){if(window.myBookmarklet!==undefined){myBookmarklet();}else{document.body.appendChild(document.createElement('script')).src='https://patf.net/pigeon/marklet.js?';}})();">
+                  Save to Pigeon
+                </a>
+              </p>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    
+      <div class="container" id="content">
+        <div class="row">
+          {{outlet}}
+        </div>
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" id="rssFeeds">
+      <div class="col-md-4 view">
+        {{#each feed in model}}
+          <div class="article">
+            {{#link-to 'articles' feed.id}}
+              {{feed.title}}
+            {{/link-to}}
+          </div>
+        {{/each}}
+      </div>
+      <div class="col-md-8 view">
+        {{outlet}}
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" id="_assoc_article">
+      <div class="article col-md-12">
+        <a {{bind-attr href=redirect}}>{{article.title}}</a>
+        <div class="meta">
+          <span>({{article.meta.domain}})</span>
+          {{#if article.meta.comments}}
+            <span><a {{bind-attr href=article.meta.comments}}>comments</a></span> 
+          {{/if}}
+          {{#if url}}
+            <span><a {{bind-attr href=url}}>cached</a></span> 
+          {{/if}}
+          {{date article.created_at}}
+        </div>
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" id="_article">
+      <div class="article col-md-12">
+        <a {{bind-attr href=article.redirect}}>{{article.title}}</a>
+        <div class="meta">
+          <span>({{article.meta.domain}})</span>
+          {{#if article.meta.comments}}
+            <span><a {{bind-attr href=article.meta.comments}}>comments</a></span> 
+          {{/if}}
+          {{#if url}}
+            <span><a {{bind-attr href=url}}>cached</a></span> 
+          {{/if}}
+          {{date article.created_at}}
+        </div>
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" id="_articles">
+      {{#each article in model}}
+        {{partial "article"}}
+      {{/each}}
+    </script>
+
+    <script type="text/x-handlebars" id="capture">
+      Got it..
+    </script>
+
+    <script type="text/x-handlebars" id="captures">
+      {{#each capture in model}}
+        {{render "_assoc_article" capture}}
+      {{/each}}
+    </script>
+
+    <script type="text/x-handlebars" id="clicks">
+      {{#each click in model}}
+        {{render "_assoc_article" click}}
+      {{/each}}
+    </script>
+
+    <script type="text/x-handlebars" id="articles">
+      {{partial "articles"}}
+    </script>
+
+    <script type="text/x-handlebars" id="recents">
+      {{partial "articles"}}
+    </script>
+
+    <script type="text/x-handlebars" id="randoms">
+      {{partial "articles"}}
+    </script>
+
+    <script type="text/x-handlebars" id="search">
+      {{partial "articles"}}
+    </script>
+
+    <script type="text/x-handlebars" id="stats">
+      <div class="col-md view">
+        <table class="table">
+          <thead>
+            <tr><th>Source</th><th>Count</th></tr>
+          </thead>
+          <tbody>
+          {{#each stat in model}}
+            <tr>
+              <td>
+                {{#link-to 'articles' stat.source_id}}
+                  {{stat.title}}
+                {{/link-to}}
+              </td>
+              <td>{{stat.count}}</td>
+            </tr>
+          {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </script>
+
+    <script type="text/javascript" src="libs/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="libs/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="libs/ember/ember.min.js"></script>
+    <script type="text/javascript" src="libs/ember/ember-template-compiler.js"></script>
+    <script type="text/javascript" src="libs/ember-data/ember-data.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+  </body>
+</html>
