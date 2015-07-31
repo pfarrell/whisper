@@ -1,0 +1,21 @@
+:plain
+  App = Ember.Application.create({
+    LOG_TRANSITIONS: true,
+    LOG_VIEW_LOOKUPS: true,
+    LOG_ACTIVE_GENERATION: true
+  });
+
+  var attr = DS.attr;
+
+  App.ApplicationAdapter = DS.RESTAdapter.extend({
+    namespace: '#{path}'
+  });
+
+  App.Note = DS.Model.extend({
+    title: attr(),
+    date: attr(),
+  });
+
+  App.Router.map(function() {
+    this.resource('notes', {path: 'notes'});
+  });

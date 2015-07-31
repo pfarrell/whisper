@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/default.css" type="text/css">
+    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css" type="text/css">
+  </head>
+  <body>
+    <script type="text/x-handlebars">
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse">
+            <span class="sr-only">
+              Toggle navigation
+            </span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="navbar-brand">
+            {{#link-to 'index'}}Whisper{{/link-to}}
+          </div>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li>
+              {{#link-to 'notes'}}Notes{{/link-to}}
+            </li>
+          </ul>
+        </div>
+      </nav>
+    
+      <div class="container" id="content">
+        <div class="row">
+          <div class="col-md-6">
+            {{outlet}}
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" id="notes">
+      Notes Here
+      <div class="col-md-4 view">
+        {{#each note in model}} 
+          <div class="note">
+            Note here
+          </div>
+        {{/each}}
+      </div>
+      <div class="col-md-8 view">
+        {{outlet}}
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" id="_assoc_article">
+      <div class="article col-md-12">
+        <a {{bind-attr href=redirect}}>{{article.title}}</a>
+        <div class="meta">
+          <span>({{article.meta.domain}})</span>
+          {{#if article.meta.comments}}
+            <span><a {{bind-attr href=article.meta.comments}}>comments</a></span> 
+          {{/if}}
+          {{#if url}}
+            <span><a {{bind-attr href=url}}>cached</a></span> 
+          {{/if}}
+          {{date article.created_at}}
+        </div>
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" id="_article">
+      <div class="article col-md-12">
+        <a {{bind-attr href=article.redirect}}>{{article.title}}</a>
+        <div class="meta">
+          <span>({{article.meta.domain}})</span>
+          {{#if article.meta.comments}}
+            <span><a {{bind-attr href=article.meta.comments}}>comments</a></span> 
+          {{/if}}
+          {{#if url}}
+            <span><a {{bind-attr href=url}}>cached</a></span> 
+          {{/if}}
+          {{date article.created_at}}
+        </div>
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" id="_articles">
+      {{#each article in model}}
+        {{partial "article"}}
+      {{/each}}
+    </script>
+
+    <script type="text/x-handlebars" id="capture">
+      Got it..
+    </script>
+
+    <script type="text/x-handlebars" id="captures">
+      {{#each capture in model}}
+        {{render "_assoc_article" capture}}
+      {{/each}}
+    </script>
+
+    <script type="text/x-handlebars" id="clicks">
+      {{#each click in model}}
+        {{render "_assoc_article" click}}
+      {{/each}}
+    </script>
+
+    <script type="text/x-handlebars" id="articles">
+      {{partial "articles"}}
+    </script>
+
+    <script type="text/x-handlebars" id="recents">
+      {{partial "articles"}}
+    </script>
+
+    <script type="text/x-handlebars" id="randoms">
+      {{partial "articles"}}
+    </script>
+
+    <script type="text/x-handlebars" id="search">
+      {{partial "articles"}}
+    </script>
+
+    <script type="text/x-handlebars" id="stats">
+      <div class="col-md view">
+        <table class="table">
+          <thead>
+            <tr><th>Source</th><th>Count</th></tr>
+          </thead>
+          <tbody>
+          {{#each stat in model}}
+            <tr>
+              <td>
+                {{#link-to 'articles' stat.source_id}}
+                  {{stat.title}}
+                {{/link-to}}
+              </td>
+              <td>{{stat.count}}</td>
+            </tr>
+          {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </script>
+
+    <script type="text/javascript" src="libs/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="libs/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="libs/ember/ember.min.js"></script>
+    <script type="text/javascript" src="libs/ember/ember-template-compiler.js"></script>
+    <script type="text/javascript" src="libs/ember-data/ember-data.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+  </body>
+</html>
