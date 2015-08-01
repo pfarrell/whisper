@@ -1,21 +1,79 @@
 :plain
-  App = Ember.Application.create({
+  var App = Ember.Application.create({
     LOG_TRANSITIONS: true,
     LOG_VIEW_LOOKUPS: true,
     LOG_ACTIVE_GENERATION: true
   });
 
+  App.ApplicationAdapter = DS.FixtureAdapter;
+
   var attr = DS.attr;
 
-  App.ApplicationAdapter = DS.RESTAdapter.extend({
-    namespace: '#{path}'
+  App.Note= DS.Model.extend({
+    title: attr(),
+    note: attr()
   });
 
-  App.Note = DS.Model.extend({
-    title: attr(),
-    date: attr(),
+  var notes = [
+      {id: '1', title: "Pinafore", note: "I am the Captain of the Pinafore" },
+      {id: '2', title: "Mikado", note: "A wandering minstrel, I." },
+      {id: '3', title: "Sorcerer", note: "My name is John Wellington Wells." },
+      {id: '4', title: "Penzance", note: "I am the very model of a modern major general" }
+    ];
+
+  Ember.Handlebars.helper('date', function(value, options) {
+    if(value==null) {
+      return "";
+    }else{
+      return new Ember.Handlebars.SafeString('<span>' + moment(value.replace(" ", "T").replace(" ", "")).fromNow() + '</span>');
+    }
   });
 
   App.Router.map(function() {
-    this.resource('notes', {path: 'notes'});
+    this.resource('notes', function() {
+      this.resource('note', {path: ':note_id'});
+    });
+  });
+
+  App.ApplicationRoute = Ember.Route.extend({
+    actions: {
+      search: function(params) {
+        this.transitionTo('search', encodeURIComponent(params));
+      },
+      capture: function(params) {
+        this.transitionTo('capture', encodeURIComponent(params));
+      },
+      refresh: function() {
+        this.refresh();
+      } 
+    }
+  });
+
+  App.IndexRoute = Ember.Route.extend({
+    beforeModel: function() {
+      this.transitionTo('notes');
+    }
+  });
+
+  App.NotesRoute = Ember.Route.extend({
+    model: function() {
+      return notes;
+    }
+  });
+
+  App.NoteRoute = Ember.Route.extend({
+    model: function(params) {
+      return notes.findBy('id', params.note_id);
+    }
+  });
+
+  App.RandomsRoute= Ember.Route.extend({
+    model: function() {
+      return this.store.findAll('random');
+    },
+    actions: {
+      search: function(query) {
+        return true;
+      }
+    }
   });
