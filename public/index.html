@@ -34,8 +34,8 @@
             <li>
               {{#link-to 'notes'}}Notes{{/link-to}}
             </li>
-            <li {{action 'new'}}>
-              New
+            <li>
+              {{#link-to 'new'}}New{{/link-to}}
             </li>
           </ul>
         </div>
@@ -48,6 +48,13 @@
           </div>
         </div>
       </div>
+    </script>
+
+    <script type="text/x-handlebars" id="new">
+      <h2>New</h2>
+      <p>{{input type="text" value=title}}</p>
+      <p>{{textarea value=note action='createNote'}}</p>
+      <button {{action 'createNote'}}>Save</button>
     </script>
 
     <script type="text/x-handlebars" id="notes">

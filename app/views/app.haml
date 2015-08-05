@@ -5,21 +5,16 @@
     LOG_ACTIVE_GENERATION: true
   });
 
-  App.ApplicationAdapter = DS.FixtureAdapter;
-
   var attr = DS.attr;
+
+  App.ApplicationAdapter = DS.RESTAdapter.extend({
+    namespace: ''
+  });
 
   App.Note= DS.Model.extend({
     title: attr(),
     note: attr()
   });
-
-  var notes = [
-      {id: '1', title: "Pinafore", note: "I am the Captain of the Pinafore" },
-      {id: '2', title: "Mikado", note: "A wandering minstrel, I." },
-      {id: '3', title: "Sorcerer", note: "My name is John Wellington Wells." },
-      {id: '4', title: "Penzance", note: "I am the very model of a modern major general" }
-    ];
 
   Ember.Handlebars.helper('date', function(value, options) {
     if(value==null) {
@@ -33,6 +28,7 @@
     this.resource('notes', function() {
       this.resource('note', {path: ':note_id'});
     });
+    this.resource('new', {path: 'new'});
   });
 
   App.ApplicationRoute = Ember.Route.extend({
@@ -45,10 +41,7 @@
       },
       refresh: function() {
         this.refresh();
-      }, 
-      new: function() {
-        this.transitionTo('new', null);
-      }
+      } 
     }
   });
 
@@ -60,13 +53,27 @@
 
   App.NotesRoute = Ember.Route.extend({
     model: function() {
-      return notes;
+      return this.store.all('note');
     }
   });
 
   App.NoteRoute = Ember.Route.extend({
     model: function(params) {
       return notes.findBy('id', params.note_id);
+    }
+  });
+
+  App.NewRoute = Ember.Route.extend({
+    actions: {
+      createNote: function() {
+        var title = this.controller.get('title');
+        var nt = this.controller.get('note');
+        var note = this.store.createRecord('note', {
+          title: title,
+          note: nt
+        });
+        note.save();
+      }
     }
   });
 
