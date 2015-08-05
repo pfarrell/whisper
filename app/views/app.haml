@@ -53,7 +53,7 @@
 
   App.NotesRoute = Ember.Route.extend({
     model: function() {
-      return this.store.all('note');
+      return this.store.findAll('note');
     }
   });
 

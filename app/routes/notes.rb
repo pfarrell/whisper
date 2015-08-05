@@ -1,16 +1,16 @@
 class App < Sinatra::Application
   get '/notes' do
+    Note.to_json(array: Note.all, root: true)
   end
 
   get '/notes/:id' do
   end
 
   post '/notes' do
-  require 'byebug'
-  byebug
     json= request.body.read
-    note = Note.from_json(json)
-    return ["oh helloooo..."].to_json
+    obj = JSON.parse(json)['note']
+    note = Note.find_or_create(title: obj['title'], note: obj['note'])
+    return note.to_json(root: true)
   end
 
   put '/notes/:id' do
