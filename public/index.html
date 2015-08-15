@@ -43,7 +43,7 @@
     
       <div class="container" id="content">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-12">
             {{outlet}}
           </div>
         </div>
@@ -52,16 +52,24 @@
 
     <script type="text/x-handlebars" id="new">
       <h2>New</h2>
-      <p>{{input type="text" value=title}}</p>
-      <p>{{textarea value=note action='createNote'}}</p>
-      <button {{action 'createNote'}}>Save</button>
+      <div class="row">
+        <div class="col-md-4">
+          <p>{{input type="text" value=title}}</p>
+          <p>{{textarea value=note}}</p>
+          <button {{action 'createNote'}} class="btn btn-default">Save</button>
+        </div>
+        <div class="col-md-8">
+          <p>{{format-markdown title}}</p>
+          <p>{{format-markdown note}}</p>
+        </div>
+      </div>
     </script>
 
     <script type="text/x-handlebars" id="notes">
       <div class="col-md-4">
         {{#each note in model}}
           <div class="note">
-            {{#link-to 'note' note}}{{note.title}}{{/link-to}}
+            {{#link-to 'note' note}}{{format-markdown note.title}}{{/link-to}}
           </div>
         {{/each}}
       </div>
@@ -71,9 +79,9 @@
     </script>
 
     <script type="text/x-handlebars" id="note">
-      <h3>{{title}}</h3>
+      <h3>{{format-markdown model.title}}</h3>
       <div class="note">
-        {{note}}
+        {{format-markdown model.note}}
       </div>
     </script>
 
@@ -83,6 +91,7 @@
     <script type="text/javascript" src="libs/ember/ember.debug.js"></script>
     <script type="text/javascript" src="libs/ember/ember-template-compiler.js"></script>
     <script type="text/javascript" src="libs/ember-data/ember-data.js"></script>
+    <script type="text/javascript" src="libs/showdown/dist/showdown.min.js"></script>
     <script type="text/javascript" src="app.js"></script>
   </body>
 </html>
