@@ -32,7 +32,7 @@
         <div class="collapse navbar-collapse" id="navbar-collapse">
           <ul class="nav navbar-nav">
             <li>
-              {{#link-to 'notes'}}Notes{{/link-to}}
+              {{#link-to 'admin'}}Admin{{/link-to}}
             </li>
             <li>
               {{#link-to 'new'}}New{{/link-to}}
@@ -47,6 +47,17 @@
             {{outlet}}
           </div>
         </div>
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" id="index">
+      <div class="col-md-8 col-md-offset-2">
+        {{#each note in model}}
+          <div class="note">
+            <div class="title">{{#link-to 'note' note}}{{note.title}}{{/link-to}}</div>
+            <div class="note">{{format-markdown note.note}}</div>
+          </div>
+        {{/each}}
       </div>
     </script>
 
@@ -65,11 +76,11 @@
       </div>
     </script>
 
-    <script type="text/x-handlebars" id="notes">
+    <script type="text/x-handlebars" id="admin">
       <div class="col-md-4">
         {{#each note in model}}
           <div class="note">
-            {{#link-to 'note' note}}{{format-markdown note.title}}{{/link-to}}
+            {{#link-to 'anote' note}}{{format-markdown note.title}}{{/link-to}}
           </div>
         {{/each}}
       </div>
@@ -79,6 +90,13 @@
     </script>
 
     <script type="text/x-handlebars" id="note">
+      <h3>{{format-markdown model.title}}</h3>
+      <div class="note">
+        {{format-markdown model.note}}
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" id="anote">
       <h3>{{format-markdown model.title}}</h3>
       <div class="note">
         {{format-markdown model.note}}

@@ -11,15 +11,11 @@
     namespace: ''
   });
 
-<!-- models -->
-
   App.Note= DS.Model.extend({
     title: attr(),
     note: attr()
   });
 
-
-<!-- helpers -->
   var showdown = new showdown.Converter();
 
   Ember.Handlebars.helper('format-markdown', function(input) {
@@ -37,15 +33,14 @@
     }
   });
 
-<!-- router -->
   App.Router.map(function() {
-    this.resource('notes', function() {
-      this.resource('note', {path: ':note_id'});
+    this.resource('admin', function() {
+      this.resource('anote', {path: ':note_id'});
     });
+    this.resource('note', {path: ':note_id'});
     this.resource('new', {path: 'new'});
   });
 
-<!-- routes -->
   App.ApplicationRoute = Ember.Route.extend({
     actions: {
       search: function(params) {
@@ -61,12 +56,12 @@
   });
 
   App.IndexRoute = Ember.Route.extend({
-    beforeModel: function() {
-      this.transitionTo('notes');
+    model: function() {
+      return this.store.findAll('note');
     }
   });
 
-  App.NotesRoute = Ember.Route.extend({
+  App.AdminRoute= Ember.Route.extend({
     model: function() {
       return this.store.findAll('note');
     }
